@@ -6,6 +6,35 @@ Mục tiêu: thêm `trace(mask)` vào xv6 để kernel ghi tên và giá trị t
 
 **Yêu cầu gốc:** [Lab0_System_Call.pdf](docs/assignment/Lab0_System_Call.pdf). Nhóm chỉ làm `trace` theo PDF. Bảng điểm ghi `trace: 10`; điểm thực tế còn phụ thuộc kết quả và phần hiểu code khi demo.
 
+## Cấu trúc thư mục
+
+```text
+lab06_xv6/
+├── .github/
+│   ├── ISSUE_TEMPLATE/task.md       # Mẫu giao một đầu việc
+│   └── PULL_REQUEST_TEMPLATE.md    # Mẫu gửi và review thay đổi
+├── docs/
+│   ├── assignment/
+│   │   └── Lab0_System_Call.pdf    # Đề gốc của thầy
+│   ├── ai-prompts.md                # Prompt chung cho cả nhóm
+│   ├── lab0-overview.md             # Giải thích đề bằng lời dễ hiểu
+│   ├── report-template.md           # Mẫu report, không chứa code
+│   ├── submission.md                # Cách chuẩn bị patch/source/report
+│   ├── verification.md              # Checklist ba ví dụ trong PDF
+│   └── work-plan.md                 # Phân công và giao diện chung
+├── kernel/                          # Mã kernel xv6
+├── mkfs/                            # Tạo filesystem image cho xv6
+├── user/                            # Chương trình user và syscall stubs
+├── AGENTS.md                        # Quy tắc làm việc cho AI
+├── CONTRIBUTING.md                  # Quy tắc nhánh, commit và review
+├── Makefile                         # Build xv6 và các chương trình user
+├── README.md                        # README hướng dẫn repo nhóm
+├── README                           # File dữ liệu mà ví dụ grep đọc
+└── ...các file xv6 gốc khác
+```
+
+Mã xv6 nằm ngay ở gốc repo; `kernel/`, `user/`, `mkfs/` là thư mục mã nguồn có sẵn. `README.md` giải thích repo nhóm, còn file tên `README` không có đuôi là dữ liệu của xv6. Giữ nguyên `README` để các ví dụ trong đề tiếp tục đọc đúng file.
+
 ## 1. Đọc gì và bắt đầu ở đâu?
 
 | Tài liệu | Dùng để làm gì? |
@@ -27,7 +56,15 @@ Repo chứa mã MIT `xv6-labs-2023`, lấy từ nhánh `syscall`, cùng tài li�
 
 Đây là **bộ khung để nhóm hoàn thiện**, chưa có system call `trace` hoạt động. Starter đã có `user/trace.c`; Dũng cần đọc, kiểm tra và hoàn thiện đoạn đó. Chương trình `_trace` chưa được thêm vào `UPROGS`, nên lúc bắt đầu xv6 vẫn boot bình thường nhưng chưa chạy được lệnh `trace`.
 
-`syscall` là nhánh chung để tích hợp. Nhánh `wuang` đã được tạo cho Quang. Dũng và Khanh tạo nhánh riêng khi nhận task. Nhánh `main` ban đầu được giữ lại để bảo toàn commit GitHub đã có; nhóm không dùng nó làm nhánh tích hợp.
+Hiện GitHub có ba nhánh vì repo ban đầu đã có một commit `main` trước khi mã xv6 được đẩy lên:
+
+| Nhánh | Vai trò |
+| --- | --- |
+| `syscall` | Nhánh mặc định theo đề; đây là nhánh chung để tích hợp bài. |
+| `wuang` | Nhánh làm việc của Quang; hiện cùng commit với `syscall`, nên GitHub hiển thị ahead/behind đều 0. |
+| `main` | Chứa commit khởi tạo một dòng README từ lúc tạo repo. Commit đó đã nằm trong lịch sử `syscall`; `main` hiện không dùng để làm bài và GitHub báo nó cũ hơn `syscall` 1,521 commit. |
+
+Dũng và Khanh tạo nhánh riêng khi bắt đầu làm task. `main` được giữ nguyên trong lúc nhóm setup; nó không phải nhánh code thứ tư bị thiếu.
 
 Tag `lab0-base` đánh dấu mã MIT trước khi nhóm thêm bộ khung, dùng làm mốc tạo patch. Không xóa hoặc di chuyển tag này.
 
