@@ -22,6 +22,7 @@ int getpid(void);
 char* sbrk(int);
 int sleep(int);
 int uptime(void);
+// TODO[Dung]: Declare int trace(int mask) for the user syscall interface.
 
 // ulib.c
 int stat(const char*, struct stat*);

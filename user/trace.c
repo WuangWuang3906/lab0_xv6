@@ -3,6 +3,8 @@
 #include "kernel/stat.h"
 #include "user/user.h"
 
+// TODO[Dung]: Review this provided wrapper before completing the user task.
+// Check mask/command arguments, MAXARG, the final NULL in nargv, and exec errors.
 int
 main(int argc, char *argv[])
 {

@@ -101,6 +101,7 @@ extern uint64 sys_unlink(void);
 extern uint64 sys_link(void);
 extern uint64 sys_mkdir(void);
 extern uint64 sys_close(void);
+// TODO[Quang]: Declare uint64 sys_trace(void), implemented by Khanh.
 
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
@@ -126,8 +127,10 @@ static uint64 (*syscalls[])(void) = {
 [SYS_link]    sys_link,
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
+// TODO[Quang]: Map SYS_trace to sys_trace in this dispatch table.
 };
 
+// TODO[Quang]: Add syscall names indexed by syscall number, including trace.
 void
 syscall(void)
 {
@@ -139,6 +142,8 @@ syscall(void)
     // Use num to lookup the system call function for num, call it,
     // and store its return value in p->trapframe->a0
     p->trapframe->a0 = syscalls[num]();
+    // TODO[Quang]: Check this process tracemask after the handler returns.
+    // If selected, print the syscall name and its actual return value.
   } else {
     printf("%d %s: unknown sys call %d\n",
             p->pid, p->name, num);

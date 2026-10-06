@@ -124,6 +124,7 @@ allocproc(void)
 found:
   p->pid = allocpid();
   p->state = USED;
+  // TODO[Khanh]: Initialize tracemask to 0 for this newly allocated process.
 
   // Allocate a trapframe page.
   if((p->trapframe = (struct trapframe *)kalloc()) == 0){
@@ -168,6 +169,7 @@ freeproc(struct proc *p)
   p->chan = 0;
   p->killed = 0;
   p->xstate = 0;
+  // TODO[Khanh]: Clear tracemask before this process slot is reused.
   p->state = UNUSED;
 }
 
