@@ -3,14 +3,34 @@
 #include "kernel/stat.h"
 #include "user/user.h"
 
-// TODO[Dung]: Review this provided wrapper before completing the user task.
-// Check mask/command arguments, MAXARG, the final NULL in nargv, and exec errors.
+static int
+parse_mask(char *s, int *mask)
+{
+  int i, value, digit;
+
+  value = 0;
+  if (s[0] == '\0')
+    return -1;
+
+  for (i = 0; s[i] != '\0'; i++) {
+    if (s[i] < '0' || s[i] > '9')
+      return -1;
+    digit = s[i] - '0';
+    if (value > (0x7fffffff - digit) / 10)
+      return -1;
+    value = value * 10 + digit;
+  }
+
+  *mask = value;
+  return 0;
+}
+
 int main(int argc, char *argv[]) {
-  int i;
+  int i, mask;
   char *nargv[MAXARG];
 
   // 1. Kiểm tra đối số đầu vào
-  if (argc < 3 || (argv[1][0] < '0' || argv[1][0] > '9')) {
+  if (argc < 3 || parse_mask(argv[1], &mask) < 0) {
     fprintf(2, "Usage: %s mask command\n", argv[0]);
     exit(1);
   }
@@ -22,7 +42,7 @@ int main(int argc, char *argv[]) {
   }
 
   // 3. Gọi syscall trace nạp mask vào kernel
-  if (trace(atoi(argv[1])) < 0) {
+  if (trace(mask) < 0) {
     fprintf(2, "%s: trace failed\n", argv[0]);
     exit(1);
   }
