@@ -37,3 +37,4 @@ entry("sbrk");
 entry("sleep");
 entry("uptime");
 # TODO[Dung]: Add the trace entry here; do not edit generated user/usys.S.
+entry("trace");
