@@ -20,4 +20,4 @@
 #define SYS_link   19
 #define SYS_mkdir  20
 #define SYS_close  21
-// TODO[Khanh]: Define SYS_trace as 22, matching docs/work-plan.md.
+#define SYS_trace  22

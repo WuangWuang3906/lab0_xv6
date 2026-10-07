@@ -8,7 +8,7 @@
 | --- | --- | --- |
 | Quang (Leader) | Điền mã | Dispatcher, log và phối hợp tích hợp; điền đóng góp thực tế. |
 | Dũng | Điền mã | Chương trình user trace, khai báo/stub/build; điền đóng góp thực tế. |
-| Khanh | Điền mã | Số hiệu, mask process và sys_trace; điền đóng góp thực tế. |
+| Khanh | Điền mã | Định nghĩa `SYS_trace` (22); thêm trường `int tracemask` vào `struct proc`; khởi tạo và reset mask trong `allocproc`/`freeproc`; cài đặt `sys_trace()` lấy mask qua `argint`, lưu vào `myproc()->tracemask` và trả về 0. |
 
 ## Mục tiêu và cách hoạt động
 

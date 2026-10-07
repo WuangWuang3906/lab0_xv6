@@ -103,6 +103,6 @@ struct proc {
   struct context context;      // swtch() here to run process
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
-  // TODO[Khanh]: Add int tracemask as private per-process state.
+  int tracemask;               // Trace mask
   char name[16];               // Process name (debugging)
 };
