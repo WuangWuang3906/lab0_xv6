@@ -92,6 +92,13 @@ sys_uptime(void)
   return xticks;
 }
 
-// TODO[Khanh]: Implement uint64 sys_trace(void).
-// Read integer argument 0 with argint, store it in myproc()->tracemask,
-// and return 0. See docs/work-plan.md for the shared interface.
+uint64
+sys_trace(void)
+{
+  int mask;
+
+  argint(0, &mask);
+  myproc()->tracemask = mask;
+  return 0;
+}
+
