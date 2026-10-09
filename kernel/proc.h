@@ -104,5 +104,6 @@ struct proc {
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   // TODO[Khanh]: Add int tracemask as private per-process state.
+  int tracemask;
   char name[16];               // Process name (debugging)
 };

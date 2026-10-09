@@ -86,8 +86,8 @@ extern uint64 sys_unlink(void);
 extern uint64 sys_link(void);
 extern uint64 sys_mkdir(void);
 extern uint64 sys_close(void);
-extern uint64 sys_hello(void);
 // TODO[Quang]: Declare uint64 sys_trace(void), implemented by Khanh.
+extern uint64 sys_trace(void);
 
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
@@ -99,11 +99,36 @@ static uint64 (*syscalls[])(void) = {
     [SYS_sleep] sys_sleep, [SYS_uptime] sys_uptime, [SYS_open] sys_open,
     [SYS_write] sys_write, [SYS_mknod] sys_mknod,   [SYS_unlink] sys_unlink,
     [SYS_link] sys_link,   [SYS_mkdir] sys_mkdir,   [SYS_close] sys_close,
-    [SYS_hello] sys_hello,
     // TODO[Quang]: Map SYS_trace to sys_trace in this dispatch table.
+    [SYS_trace] sys_trace,
 };
 
 // TODO[Quang]: Add syscall names indexed by syscall number, including trace.
+static char *syscall_names[] = {
+  [SYS_fork]    "fork",
+  [SYS_exit]    "exit",
+  [SYS_wait]    "wait",
+  [SYS_pipe]    "pipe",
+  [SYS_read]    "read",
+  [SYS_kill]    "kill",
+  [SYS_exec]    "exec",
+  [SYS_fstat]   "fstat",
+  [SYS_chdir]   "chdir",
+  [SYS_dup]     "dup",
+  [SYS_getpid]  "getpid",
+  [SYS_sbrk]    "sbrk",
+  [SYS_sleep]   "sleep",
+  [SYS_uptime]  "uptime",
+  [SYS_open]    "open",
+  [SYS_write]   "write",
+  [SYS_mknod]   "mknod",
+  [SYS_unlink]  "unlink",
+  [SYS_link]    "link",
+  [SYS_mkdir]   "mkdir",
+  [SYS_close]   "close",
+  [SYS_trace]   "trace",
+};
+
 void syscall(void) {
   int num;
   struct proc *p = myproc();
@@ -115,6 +140,9 @@ void syscall(void) {
     p->trapframe->a0 = syscalls[num]();
     // TODO[Quang]: Check this process tracemask after the handler returns.
     // If selected, print the syscall name and its actual return value.
+    if ((p->tracemask >> num) & 1) {
+      printf("syscall %s -> %d\n", syscall_names[num], p->trapframe->a0);
+    }
   } else {
     printf("%d %s: unknown sys call %d\n", p->pid, p->name, num);
     p->trapframe->a0 = -1;

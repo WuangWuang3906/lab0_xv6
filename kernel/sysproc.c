@@ -95,3 +95,11 @@ sys_uptime(void)
 // TODO[Khanh]: Implement uint64 sys_trace(void).
 // Read integer argument 0 with argint, store it in myproc()->tracemask,
 // and return 0. See docs/work-plan.md for the shared interface.
+uint64
+sys_trace(void)
+{
+  int mask;
+  argint(0, &mask);             // Dòng 1: Lấy tham số từ User
+  myproc()->tracemask = mask;  // Dòng 2: Lưu vào Process
+  return 0;                    // Dòng 3: Báo thành công
+}
